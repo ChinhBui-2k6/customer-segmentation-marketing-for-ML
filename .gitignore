@@ -1,0 +1,22 @@
+
+
+# Data (đề bài yêu cầu không gửi kèm dữ liệu)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Cache và checkpoint
+__pycache__/
+.ipynb_checkpoints/
+
+# Mô hình đã huấn luyện
+*.pkl
+*.joblib
+
+# Môi trường và editor
+.venv/
+venv/
+.env
+.vscode/
+.DS_Store
