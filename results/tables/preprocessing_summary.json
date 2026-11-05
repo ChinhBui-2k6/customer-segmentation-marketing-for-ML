@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "reference_date": "2014-06-30",
+  "raw_rows": 2240,
+  "raw_columns": 29,
+  "exact_duplicates_removed": 0,
+  "birth_outliers": 3,
+  "income_outliers": 1,
+  "outlier_rows_removed": 4,
+  "cleaned_rows": 2236,
+  "features": 31,
+  "numeric_features": 29,
+  "categorical_features": 2,
+  "missing_after_cleaning": {
+    "Income": 24,
+    "Family_Size": 4
+  },
+  "raw_response_counts": {
+    "0": 1906,
+    "1": 334
+  },
+  "cleaned_response_counts": {
+    "0": 1902,
+    "1": 334
+  },
+  "duplicate_profiles_excluding_id_raw": 182,
+  "duplicate_feature_rows_cleaned": 203,
+  "duplicate_groups_with_multiple_rows": 194,
+  "categorical_values": {
+    "Marital_Group": [
+      "Partner",
+      "Single",
+      "Unknown"
+    ],
+    "Education_Level": [
+      "2n Cycle",
+      "Basic",
+      "Graduation",
+      "Master",
+      "PhD"
+    ]
+  },
+  "imputed": false,
+  "encoded": false,
+  "scaled": false
+}

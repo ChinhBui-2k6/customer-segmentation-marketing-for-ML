@@ -1,0 +1,26 @@
+stage,column,value,count,percent
+raw,Education,Graduation,1127,50.31250000000001
+raw,Education,PhD,486,21.696428571428573
+raw,Education,Master,370,16.517857142857142
+raw,Education,2n Cycle,203,9.0625
+raw,Education,Basic,54,2.410714285714286
+raw,Marital_Status,Married,864,38.57142857142858
+raw,Marital_Status,Together,580,25.892857142857146
+raw,Marital_Status,Single,480,21.428571428571427
+raw,Marital_Status,Divorced,232,10.357142857142858
+raw,Marital_Status,Widow,77,3.4375000000000004
+raw,Marital_Status,Alone,3,0.13392857142857142
+raw,Marital_Status,Absurd,2,0.08928571428571429
+raw,Marital_Status,YOLO,2,0.08928571428571429
+raw,Response,0,1906,85.08928571428571
+raw,Response,1,334,14.910714285714285
+cleaned,Marital_Group,Partner,1442,64.4901610017889
+cleaned,Marital_Group,Single,790,35.3309481216458
+cleaned,Marital_Group,Unknown,4,0.17889087656529518
+cleaned,Education_Level,Graduation,1126,50.357781753130595
+cleaned,Education_Level,PhD,485,21.69051878354204
+cleaned,Education_Level,Master,370,16.547406082289804
+cleaned,Education_Level,2n Cycle,201,8.989266547406082
+cleaned,Education_Level,Basic,54,2.415026833631485
+cleaned,Response,0,1902,85.06261180679785
+cleaned,Response,1,334,14.937388193202148

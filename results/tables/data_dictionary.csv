@@ -1,0 +1,30 @@
+﻿column,group,kind,description
+ID,Không dùng,định danh,Mã định danh khách hàng
+Year_Birth,Nhân khẩu,số (rời rạc),Năm sinh
+Education,Nhân khẩu,category (one-hot; không áp đặt thứ bậc),Trình độ học vấn
+Marital_Status,Nhân khẩu,nominal,Tình trạng hôn nhân
+Income,Nhân khẩu,số (liên tục),Thu nhập hộ gia đình hàng năm
+Kidhome,Nhân khẩu,số (rời rạc),Số trẻ nhỏ trong nhà
+Teenhome,Nhân khẩu,số (rời rạc),Số thiếu niên trong nhà
+Dt_Customer,Nhân khẩu,ngày,Ngày đăng ký làm khách hàng (dd-mm-yyyy)
+Recency,Hành vi mua,số (rời rạc),Số ngày kể từ lần mua hàng gần nhất
+MntWines,Hành vi mua,số (liên tục),Chi tiêu cho rượu vang (2 năm gần nhất)
+MntFruits,Hành vi mua,số (liên tục),Chi tiêu cho trái cây
+MntMeatProducts,Hành vi mua,số (liên tục),Chi tiêu cho thịt
+MntFishProducts,Hành vi mua,số (liên tục),Chi tiêu cho cá
+MntSweetProducts,Hành vi mua,số (liên tục),Chi tiêu cho đồ ngọt
+MntGoldProds,Hành vi mua,số (liên tục),Chi tiêu cho vàng/trang sức
+NumDealsPurchases,Hành vi mua,số (rời rạc),Số lần mua có khuyến mãi
+NumWebPurchases,Hành vi mua,số (rời rạc),Số lần mua qua website
+NumCatalogPurchases,Hành vi mua,số (rời rạc),Số lần mua qua catalog
+NumStorePurchases,Hành vi mua,số (rời rạc),Số lần mua trực tiếp tại cửa hàng
+NumWebVisitsMonth,Hành vi mua,số (rời rạc),Số lần truy cập website mỗi tháng
+AcceptedCmp1,Chiến dịch,nhị phân,Chấp nhận chiến dịch 1 (0/1)
+AcceptedCmp2,Chiến dịch,nhị phân,Chấp nhận chiến dịch 2 (0/1)
+AcceptedCmp3,Chiến dịch,nhị phân,Chấp nhận chiến dịch 3 (0/1)
+AcceptedCmp4,Chiến dịch,nhị phân,Chấp nhận chiến dịch 4 (0/1)
+AcceptedCmp5,Chiến dịch,nhị phân,Chấp nhận chiến dịch 5 (0/1)
+Complain,Chiến dịch,nhị phân,Đã phàn nàn trong 2 năm gần nhất (0/1)
+Z_CostContact,Không dùng,hằng số,Chi phí liên hệ (hằng số)
+Z_Revenue,Không dùng,hằng số,Doanh thu (hằng số)
+Response,Nhãn,nhị phân,Chấp nhận chiến dịch cuối (NHÃN: 0/1)

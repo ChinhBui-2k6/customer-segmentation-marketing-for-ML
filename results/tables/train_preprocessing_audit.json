@@ -1,0 +1,46 @@
+{
+  "frozen_splits_unchanged_bytes_and_mtime": true,
+  "test_transformed": false,
+  "test_used_for_fit": false,
+  "fit_scope": "training partition independently for each development split",
+  "reduction_rule": "max(1, floor(encoded_train_dimensions / 3))",
+  "split_manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9",
+  "experiments": [
+    {
+      "split": "80_20",
+      "train_rows": 1430,
+      "validation_rows": 358,
+      "train_response_1": 0.14895104895104896,
+      "validation_response_1": 0.15083798882681565,
+      "features_encoded": 37,
+      "features_pca": 12,
+      "pca_explained_variance_ratio_sum": 0.8016944648359903,
+      "Income_train_median": 51369.0,
+      "group_overlap": 0
+    },
+    {
+      "split": "70_30",
+      "train_rows": 1250,
+      "validation_rows": 538,
+      "train_response_1": 0.1488,
+      "validation_response_1": 0.15055762081784388,
+      "features_encoded": 37,
+      "features_pca": 12,
+      "pca_explained_variance_ratio_sum": 0.8019936047614246,
+      "Income_train_median": 51012.0,
+      "group_overlap": 0
+    },
+    {
+      "split": "60_40",
+      "train_rows": 1072,
+      "validation_rows": 716,
+      "train_response_1": 0.14925373134328357,
+      "validation_response_1": 0.1494413407821229,
+      "features_encoded": 37,
+      "features_pca": 12,
+      "pca_explained_variance_ratio_sum": 0.8048503961682855,
+      "Income_train_median": 50326.5,
+      "group_overlap": 0
+    }
+  ]
+}

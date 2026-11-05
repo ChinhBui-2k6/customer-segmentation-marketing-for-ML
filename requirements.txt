@@ -1,8 +1,9 @@
 pandas
 numpy
-scikit-learn
+scikit-learn>=1.6
 matplotlib
 seaborn
 imbalanced-learn
 shap
 jupyter
+joblib
