@@ -1,0 +1,23 @@
+{
+  "test_used_for_fit": false,
+  "test_transformed_or_predicted": false,
+  "all_split_files_unchanged_bytes_and_mtime": true,
+  "fit_scope": "training partition; all preprocessing and balancing refit inside group-CV folds",
+  "outer_validation_used_for_tuning": false,
+  "cv_folds": 5,
+  "tuning_metric": "mean average_precision (AP), separate from trapezoidal PR-AUC",
+  "thresholds": {
+    "gaussian_nb": "posterior class-1 >= 0.5 (ties follow sklearn class order)",
+    "svm_rbf": "decision margin 0, sklearn predict"
+  },
+  "models": [
+    "gaussian_nb",
+    "svm_rbf"
+  ],
+  "experiment_configurations": 12,
+  "variants_per_configuration": 3,
+  "metric_rows": 72,
+  "manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9",
+  "sklearn_version": "1.9.1",
+  "random_seed": 42
+}

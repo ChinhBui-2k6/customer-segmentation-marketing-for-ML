@@ -1,0 +1,5 @@
+method,partition,rows,components,trustworthiness_10,max_abs_response_correlation,retained_training_variance_ratio,variance_space,gamma
+PCA,train,1430,6,0.9765357795262355,0.3524142406203701,0.6292806142770565,encoded input,
+Kernel PCA RBF,train,1430,6,0.9479399427013425,0.2978818575326083,0.3920544250325581,centered RBF kernel,0.02702702702702703
+PCA,validation,358,6,0.9667251151979774,0.3564199351861068,0.6292806142770565,encoded input,
+Kernel PCA RBF,validation,358,6,0.9295086245565387,0.3022304443637482,0.3920544250325581,centered RBF kernel,0.02702702702702703

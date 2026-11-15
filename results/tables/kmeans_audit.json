@@ -1,0 +1,73 @@
+{
+  "test_used_for_fit": false,
+  "test_transformed_or_clustered": false,
+  "all_split_files_unchanged_bytes_and_mtime": true,
+  "fit_scope": "train independently per development split and representation",
+  "selection_rule": "max training silhouette over K=2..10, smaller K on tie",
+  "response_used_to_select_k_or_fit": false,
+  "random_seed": 42,
+  "n_init": 10,
+  "manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9",
+  "experiments": [
+    {
+      "split": "80_20",
+      "space": "encoded",
+      "dimensions": 37,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.2657915869833538,
+      "validation_silhouette": 0.2750708074453098,
+      "minimum_seed_ari": 0.9943928268471239
+    },
+    {
+      "split": "80_20",
+      "space": "pca",
+      "dimensions": 12,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.311775102683954,
+      "validation_silhouette": 0.322626352155298,
+      "minimum_seed_ari": 1.0
+    },
+    {
+      "split": "70_30",
+      "space": "encoded",
+      "dimensions": 37,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.2672070540703454,
+      "validation_silhouette": 0.27007683467601895,
+      "minimum_seed_ari": 1.0
+    },
+    {
+      "split": "70_30",
+      "space": "pca",
+      "dimensions": 12,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.3129751279118614,
+      "validation_silhouette": 0.320253444816361,
+      "minimum_seed_ari": 1.0
+    },
+    {
+      "split": "60_40",
+      "space": "encoded",
+      "dimensions": 37,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.272354397440516,
+      "validation_silhouette": 0.2597267536510337,
+      "minimum_seed_ari": 1.0
+    },
+    {
+      "split": "60_40",
+      "space": "pca",
+      "dimensions": 12,
+      "selected_k": 2,
+      "elbow_suggestion_k": 5,
+      "train_silhouette": 0.3187957875085053,
+      "validation_silhouette": 0.3092736780354881,
+      "minimum_seed_ari": 1.0
+    }
+  ]
+}

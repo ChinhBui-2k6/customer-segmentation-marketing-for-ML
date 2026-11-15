@@ -1,17 +1,122 @@
-"""Evaluate Logistic Regression and export the scores shared by the regressors.
-
-Run after the frozen splits are generated: python -m src.classification
-"""
-from hashlib import sha256
-from io import BytesIO
-import json
+"""Gaussian NB and RBF SVM with group-aware, train-only model selection."""
 from pathlib import Path
+import sys
+
+if __name__ == "__main__" and not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import GridSearchCV, StratifiedGroupKFold
+from sklearn.naive_bayes import GaussianNB
+from sklearn.pipeline import Pipeline
+from sklearn.svm import SVC
+from sklearn.utils.class_weight import compute_sample_weight
+
+from src import config
+from src.evaluation import classification_metrics, positive_scores
+from src.experiment_preprocessing import make_feature_pipeline
+
+
+class FoldBalancedGaussianNB(GaussianNB):
+    """Calculate balanced weights inside fit, on the current training fold only.
+
+    GridSearchCV clones this estimator for each fold. Passing a single set of
+    full-training weights into all folds would use their held-out frequencies.
+    """
+    def __init__(self, *, var_smoothing=1e-9, balanced=False):
+        super().__init__(var_smoothing=var_smoothing)
+        self.balanced = balanced
+
+    def fit(self, X, y, sample_weight=None):
+        if self.balanced:
+            weights = compute_sample_weight("balanced", y)
+            sample_weight = weights if sample_weight is None else weights * sample_weight
+        return super().fit(X, y, sample_weight=sample_weight)
+
+
+def make_classifier(X_train, model, reduce=False, balanced=False):
+    """Fresh pipeline: preprocessing, optional fold-specific PCA, classifier."""
+    features = make_feature_pipeline(X_train, reduce=reduce)
+    if model == "gaussian_nb":
+        classifier = FoldBalancedGaussianNB(balanced=balanced)
+    elif model == "svm_rbf":
+        classifier = SVC(kernel="rbf", C=1.0, gamma="scale",
+                         class_weight="balanced" if balanced else None)
+    else:
+        raise ValueError("model must be gaussian_nb or svm_rbf.")
+    return Pipeline([*features.steps, ("classifier", classifier)])
+
+
+def grouped_training_cv(X_train, y_train, groups, n_splits=config.CLASSIFICATION_CV_FOLDS):
+    """Materialize audited train-only CV splits, retaining duplicate groups."""
+    y, group_ids = np.asarray(y_train), np.asarray(groups)
+    if len(X_train) != len(y) or len(y) != len(group_ids) or pd.isna(group_ids).any():
+        raise ValueError("X, labels and nonmissing groups must have matching rows.")
+    if set(np.unique(y)) != {0, 1}:
+        raise ValueError("Training requires both classes 0 and 1.")
+    splitter = StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=config.RANDOM_SEED)
+    folds = list(splitter.split(X_train, y, group_ids))
+    for train, validation in folds:
+        if set(group_ids[train]) & set(group_ids[validation]):
+            raise ValueError("Duplicate group overlaps a CV fold.")
+        if any(set(np.unique(y[part])) != {0, 1} for part in (train, validation)):
+            raise ValueError("A CV partition is missing a class; use fewer folds.")
+    return folds
+
+
+def tune_classifier(X_train, y_train, groups, model, reduce=False,
+                    n_splits=config.CLASSIFICATION_CV_FOLDS, param_grid=None):
+    """Optimize mean group-CV AP on train. No outer validation input accepted.
+
+    All preprocessing, PCA and balancing refit inside every training fold.
+    AP is selected for ranking under class imbalance; trapezoidal PR-AUC is
+    reported separately in evaluation.py. Defaults do not tune thresholds.
+    """
+    pipeline = make_classifier(X_train, model, reduce=reduce)
+    folds = grouped_training_cv(X_train, y_train, groups, n_splits=n_splits)
+    if param_grid is None:
+        if model == "gaussian_nb":
+            param_grid = {"classifier__var_smoothing": config.NB_SMOOTHING_GRID,
+                          "classifier__balanced": [False, True]}
+        else:
+            param_grid = {"classifier__C": config.SVM_C_GRID,
+                          "classifier__gamma": config.SVM_GAMMA_GRID,
+                          "classifier__class_weight": [None, "balanced"]}
+    search = GridSearchCV(pipeline, param_grid=param_grid,
+                          scoring={"average_precision": "average_precision", "f1": "f1",
+                                   "recall": "recall", "roc_auc": "roc_auc"},
+                          refit="average_precision", cv=folds, n_jobs=1,
+                          return_train_score=True, error_score="raise")
+    search.fit(X_train, y_train)
+    return search
+
+
+def evaluate_classifier(estimator, X, y):
+    predictions = estimator.predict(X)
+    scores = positive_scores(estimator, X)
+    return classification_metrics(y, predictions, scores), predictions, scores
+
+
+# Tuananh: imported from origin/main at 191d94c.
+from hashlib import sha256
+
+from io import BytesIO
+
+import json
+
+from pathlib import Path
+
 from tempfile import TemporaryDirectory
 
 import joblib
+
 import pandas as pd
+
 import sklearn
+
 from sklearn.linear_model import LogisticRegression
+
 from sklearn.metrics import (
     accuracy_score,
     auc,
@@ -22,11 +127,12 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
+
 from sklearn.model_selection import GridSearchCV, StratifiedGroupKFold, cross_val_predict
 
-from . import config
-from .experiment_preprocessing import make_feature_pipeline
+from src import config
 
+from src.experiment_preprocessing import make_feature_pipeline
 
 def fit_logistic_source(X_train, y_train, groups, X_validation, seed):
     """Fit the baseline on full features and score train out of fold."""
@@ -40,12 +146,10 @@ def fit_logistic_source(X_train, y_train, groups, X_validation, seed):
     validation_scores = pipeline.predict_proba(X_validation)[:, 1]
     return pipeline, train_scores, validation_scores
 
-
 def _score_table(metadata, labels, probabilities):
     return metadata[["processed_row", "source_row"]].assign(
         Response=labels.to_numpy(), probability_response_1=probabilities
     )
-
 
 def _summarize(split, role, labels, scores):
     predicted = scores >= 0.5
@@ -61,7 +165,6 @@ def _summarize(split, role, labels, scores):
         "pr_auc": auc(recall, precision),
         "roc_auc": roc_auc_score(labels, scores),
     }
-
 
 def _iter_verified_splits(splits_dir, manifest):
     def read_verified_csv(name, **kwargs):
@@ -85,7 +188,6 @@ def _iter_verified_splits(splits_dir, manifest):
         if set(train_rows["duplicate_group"]) & set(validation_rows["duplicate_group"]):
             raise ValueError(f"Duplicate groups overlap: {split}")
         yield split, train, validation, train_rows, validation_rows
-
 
 def evaluate_logistic(splits_dir=None):
     """Tune on train groups, then score train and validation for every scenario."""
@@ -151,7 +253,6 @@ def evaluate_logistic(splits_dir=None):
                         }))
     return pd.DataFrame(metrics), pd.concat(validation_predictions, ignore_index=True)
 
-
 def export_logistic_handoff(splits_dir=None, output_dir=None):
     """Publish all three handoff splits together in a new directory."""
     splits_dir = Path(splits_dir) if splits_dir is not None else config.SPLITS_DIR
@@ -208,4 +309,9 @@ def export_logistic_handoff(splits_dir=None, output_dir=None):
 
 
 if __name__ == "__main__":
-    print(export_logistic_handoff())
+    notebook = Path(__file__).resolve().parent.parent / "notebooks" / "04_classification.ipynb"
+    if "--export-logistic-scores" in sys.argv:
+        print(export_logistic_handoff())
+    else:
+        print("Open the notebook and select Restart Kernel and Run All:")
+        print(f'jupyter notebook "{notebook}"')

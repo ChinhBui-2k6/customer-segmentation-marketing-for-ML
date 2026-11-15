@@ -6,7 +6,15 @@
 **Thời gian triển khai:** **04/11/2026–18/11/2026** (hai tuần).  
 **Mục tiêu tuần 1:** sẵn sàng nội dung giữa kỳ ngày **11/11/2026**. **Mục tiêu tuần 2:** hoàn thiện toàn bộ ngày **18/11/2026**. Đây là lịch làm việc nội bộ; chưa có ngày nộp chính thức của môn học.
 
-> Đánh dấu `[x]` khi công việc đã hoàn thành và có kết quả kiểm tra. Cập nhật 05/11/2026: notebook 01 đã chạy toàn bộ; pipeline riêng cho ba tập chia, thống kê và biểu đồ đã xuất; 17 kiểm tra đạt. Các dấu hoàn thành phản ánh đầu ra kỹ thuật đã có, không thay việc thành viên đọc duyệt. Chi tiết trong [tài liệu bàn giao](preprocessing_handoff.md). PDF phân công trước đó là bản lịch phân công, chưa phản ánh cập nhật tiến độ này.
+> Đánh dấu `[x]` khi công việc đã hoàn thành và có kết quả kiểm tra. Cập nhật 07/11/2026: notebook 01, phần PCA của notebook 02, K-Means của notebook 03 và NB/SVM của notebook 04 đã chạy toàn bộ; 29 kiểm tra đạt. Các dấu hoàn thành phản ánh đầu ra kỹ thuật đã có, không thay việc thành viên đọc duyệt. Xem các tài liệu bàn giao tương ứng. PDF phân công trước đó là bản lịch phân công, chưa phản ánh cập nhật tiến độ này.
+
+> **Cập nhật 15/11/2026:** đã nhận Kernel PCA và Logistic từ GitHub, ghép và chạy
+> lại đầy đủ notebook 02/04. PCA và Kernel PCA so sánh cùng train/validation
+> 80:20, cùng 6 thành phần; nhánh phân loại vẫn dùng PCA 12 chiều. Có bảng đối
+> chiếu ba mô hình, nhưng giữa kỳ trình bày chính NB/SVM. Đã có README,
+> DATA_GUIDE, bản thảo báo cáo và kịch bản slides; chưa thay việc hai thành viên
+> đọc duyệt, định dạng Word/PowerPoint và điền thông tin nộp bài. Xem
+> [kiểm tra giữa kỳ](midterm_readiness.md). Mục 2.4(c) để cuối kỳ.
 
 ## 1. Nhìn nhanh
 
@@ -41,33 +49,34 @@ File: [notebook 01](../notebooks/01_preprocessing.ipynb) · [preprocessing.py](.
 
 File: [notebook 02](../notebooks/02_dimensionality_reduction.ipynb) · [dim_reduction.py](../src/dim_reduction.py)
 
-- [ ] Triển khai PCA; lập bảng **mean, std, skewness (độ lệch)** của từng thành phần.
-- [ ] Báo cáo explained variance và phương sai tích lũy.
-- [ ] Vẽ từng cặp trong **4–6 thành phần**, phân biệt theo Response.
-- [ ] Vẽ phân phối/boxplot của một số thành phần theo **Response=0/1** và giải thích quan hệ với nhãn.
-- [ ] Bàn giao hàm PCA cho Tuananh ghép pipeline dùng chung với `k = max(1, floor(d/3))`.
-- [ ] Ghép phương pháp thứ hai của Tuananh và cùng viết so sánh.
+- [x] Triển khai PCA; lập bảng **mean, std, skewness (độ lệch)** của từng thành phần trên ba tập chia.
+- [x] Báo cáo explained variance và phương sai tích lũy; 12 PC giữ khoảng 80,17–80,49% phương sai.
+- [x] Vẽ đủ 15 cặp trong **6 thành phần đầu**, phân biệt theo Response (train 80:20).
+- [x] Vẽ boxplot của 6 thành phần theo **Response=0/1** và giải thích quan hệ với nhãn.
+- [x] Chuẩn bị hàm PCA và [tài liệu bàn giao](pca_handoff.md) cho Tuananh, khớp pipeline dùng chung với `k = max(1, floor(d/3))`; chưa xác nhận thành viên đã đọc duyệt.
+- [x] Ghép Kernel PCA của Tuananh, thống nhất mẫu với PCA và viết so sánh kỹ thuật; hai thành viên cần đọc duyệt.
 
 ### 03 · K-Means — mục 2.3
 
 File: [notebook 03](../notebooks/03_clustering.ipynb) · [clustering.py](../src/clustering.py)
 
-- [ ] Chọn K bằng Elbow và Silhouette.
-- [ ] Mô tả khách hàng, độ đo và tỷ lệ Response trong từng cụm.
-- [ ] Vẽ màu theo cụm, ký hiệu theo nhãn; so sánh với GMM/DBSCAN của Tuananh.
+- [x] Chọn K bằng Elbow và Silhouette; sáu kịch bản chọn K=2 theo Silhouette train, Elbow gợi ý K=5 (06/11/2026).
+- [x] Mô tả khách hàng, độ đo và tỷ lệ Response trong từng cụm; đã xuất bảng, kiểm tra độ ổn định và [tài liệu bàn giao](kmeans_handoff.md).
+- [x] Vẽ màu theo cụm, ký hiệu theo nhãn; có hình train/validation cho bản 37 chiều và PCA 12 chiều.
+- [ ] So sánh với GMM/DBSCAN sau khi Tuananh bàn giao.
 
 ### 04 · Naive Bayes và SVM — mục 2.4(a–b)
 
 File: [notebook 04](../notebooks/04_classification.ipynb) · [classification.py](../src/classification.py)
 
-- [ ] Triển khai **Gaussian Naive Bayes** và **SVM RBF**.
-- [ ] So sánh SVM mặc định với `class_weight='balanced'`; NB mặc định với trọng số mẫu cân bằng chỉ tính từ train.
-- [ ] Nêu hạn chế giả định Gaussian trên cột one-hot; giải thích ảnh hưởng và hướng kiểm chứng theo mục 7.
-- [ ] Chạy đủ kịch bản phân loại trong mục 4 bên dưới cho cả hai mô hình.
-- [ ] Nhận xét overfit; điều chỉnh `var_smoothing` của NB, `C` của SVM khi phù hợp.
-- [ ] Xuất bảng độ đo, confusion matrix, ROC/PR và giải thích kết quả.
-- [ ] Viết **kết luận riêng cho Naive Bayes và SVM: mô hình có phù hợp không, vì sao**, dựa trên dự đoán–thực tế, lỗi FP/FN, độ đo lớp 1 và chênh lệch train/validation.
-- [ ] Nhận hàm, kết quả và nhận xét Logistic từ Tuananh; **ghép notebook 04**, bảng so sánh ba mô hình và kiểm tra chạy từ đầu đến cuối.
+- [x] Triển khai **Gaussian Naive Bayes** và **SVM RBF**; xem [bàn giao NB/SVM](classification_handoff.md).
+- [x] So sánh SVM mặc định với `class_weight='balanced'`; NB mặc định với trọng số mẫu cân bằng tính lại trong mỗi fold train.
+- [x] Nêu hạn chế giả định Gaussian trên cột one-hot; giải thích ảnh hưởng và hướng kiểm chứng theo mục 7 (chưa làm NB hỗn hợp tùy chọn).
+- [x] Chạy đủ ba tỷ lệ và hai biểu diễn cho cả hai mô hình; mỗi cấu hình có default/balanced/tuned, tổng 72 dòng độ đo train/validation.
+- [x] Nhận xét overfit; thử `var_smoothing` của NB, `C`/`gamma` của SVM bằng 5-fold group-CV trong train. SVM còn dấu hiệu overfit sau hiệu chỉnh, đã ghi rõ.
+- [x] Xuất bảng độ đo, confusion matrix, ROC/PR và giải thích kết quả; phân biệt PR-AUC hình thang với AP.
+- [x] Viết **kết luận riêng cho Naive Bayes và SVM: mô hình có phù hợp không, vì sao**, dựa trên dự đoán–thực tế, lỗi FP/FN, độ đo lớp 1 và chênh lệch train/validation.
+- [x] Nhận hàm, kết quả và nhận xét Logistic từ Tuananh; **ghép notebook 04**, bảng so sánh ba mô hình và kiểm tra chạy từ đầu đến cuối.
 
 ### 05 · Mô hình hồi quy thứ nhất — mục 2.4(c)
 
@@ -81,8 +90,9 @@ File: [notebook 05](../notebooks/05_classification_to_regression.ipynb) · [regr
 ### Tài liệu và hàm dùng chung
 
 - [ ] **Tổng hợp [evaluation.py](../src/evaluation.py)**: chốt giao diện cùng Tuananh trước 07/11, thống nhất tên độ đo/định dạng bảng; tích hợp hàm đánh giá của cả hai và kiểm tra kết quả dùng chung.
+- [x] Đã có giao diện đánh giá phân loại trong `evaluation.py` dùng cho NB/SVM và có thể dùng Logistic; phần hồi quy và xác nhận giao diện với Tuananh còn chờ.
 - [ ] Tổng hợp các hàm vẽ dùng chung trong [visualization.py](../src/visualization.py).
-- [ ] **Viết [README.md](../README.md)**: cài đặt, thứ tự chạy, vị trí kết quả và liên kết DATA_GUIDE; nhận thông tin môi trường/pipeline từ Tuananh. Có bản chạy được cho giữa kỳ 09/11, hoàn thiện trước 14/11.
+- [x] **Viết [README.md](../README.md)**: cài đặt, thứ tự chạy, vị trí kết quả và liên kết DATA_GUIDE; có môi trường đã kiểm chứng và lệnh chạy tự động.
 - [ ] Viết lý thuyết, thực nghiệm và nhận xét cho các mô hình mình làm.
 - [ ] Tổng hợp slides trong `slides/`; nhận nội dung từ Tuananh.
 - [ ] **Đọc duyệt báo cáo cuối** sau khi Tuananh ghép: nội dung, số liệu, hình/bảng, kết luận và định dạng; gửi lỗi để Tuananh sửa trước khi nộp.
@@ -105,11 +115,11 @@ File: [notebook 01](../notebooks/01_preprocessing.ipynb) · [preprocessing.py](.
 
 File: [notebook 02](../notebooks/02_dimensionality_reduction.ipynb) · [dim_reduction.py](../src/dim_reduction.py)
 
-- [ ] Triển khai **Kernel PCA với kernel RBF** có `transform`; ghi rõ tham số `gamma` và cách chọn.
-- [ ] Lập bảng **mean, std, skewness**; vẽ các cặp trong **4–6 thành phần** và quan hệ của một số thành phần với Response.
-- [ ] Báo cáo phương sai và tỷ lệ phương sai **trong không gian kernel**, không đồng nhất với phương sai dữ liệu gốc; cách tính ở mục 7.
+- [x] Triển khai **Kernel PCA với kernel RBF** có `transform`; gamma=1/d, dùng cùng train 80:20 với PCA.
+- [x] Lập bảng **mean, std, skewness**; vẽ các cặp trong **4–6 thành phần** và quan hệ của một số thành phần với Response.
+- [x] Báo cáo phương sai và tỷ lệ phương sai **trong không gian kernel**, không đồng nhất với phương sai dữ liệu gốc; cách tính ở mục 7.
 - [x] Đã có pipeline **PCA còn 1/3 số chiều** dùng chung cho phân loại/hồi quy, fit riêng từng tập chia (`src/experiment_preprocessing.py`); hai thành viên tiếp tục đọc duyệt, phân tích đầy đủ trong notebook 02.
-- [ ] Bàn giao Kernel PCA cho ChinhBui ghép notebook 02; cùng so sánh PCA và Kernel PCA.
+- [x] Bàn giao Kernel PCA qua GitHub; đã ghép notebook 02 và có so sánh cùng mẫu. Hai thành viên đọc duyệt nhận xét.
 
 ### 03 · GMM hoặc DBSCAN — mục 2.3
 
@@ -124,12 +134,12 @@ File: [notebook 03](../notebooks/03_clustering.ipynb) · [clustering.py](../src/
 
 File: [notebook 04](../notebooks/04_classification.ipynb) · [classification.py](../src/classification.py)
 
-- [ ] Triển khai **Logistic Regression** và chạy đủ kịch bản phân loại.
-- [ ] So sánh mặc định với `class_weight='balanced'`; đánh giá theo các độ đo ở mục 4.
-- [ ] Nhận xét overfit; điều chỉnh `C`, L1/L2 với solver phù hợp.
-- [ ] Xuất bảng độ đo, confusion matrix, ROC/PR và giải thích kết quả.
-- [ ] **Bàn giao hàm, kết quả và nhận xét Logistic cho ChinhBui ghép notebook 04**; kết quả sơ bộ trước 09/11, đầy đủ thí nghiệm trước 14/11.
-- [ ] Viết **kết luận Logistic có phù hợp không, vì sao**, dựa trên dự đoán–thực tế, lỗi FP/FN, độ đo lớp 1 và chênh lệch train/validation.
+- [x] Triển khai **Logistic Regression** và chạy đủ kịch bản phân loại.
+- [x] So sánh không cân bằng với `class_weight='balanced'`; cả hai nhánh đều dò C/L1/L2, không gọi nhánh đầu là mô hình chưa tuning.
+- [x] Nhận xét overfit; điều chỉnh `C`, L1/L2 với solver phù hợp.
+- [x] Xuất bảng độ đo, confusion matrix, ROC/PR và giải thích kết quả.
+- [x] **Bàn giao hàm, kết quả và nhận xét Logistic qua GitHub; đã ghép notebook 04**.
+- [x] Viết **kết luận Logistic có phù hợp không, vì sao**, dựa trên dự đoán–thực tế, lỗi FP/FN, độ đo lớp 1 và chênh lệch train/validation.
 
 ### 05 · Tạo đầu ra và mô hình hồi quy thứ hai — mục 2.4(c)
 
@@ -143,7 +153,7 @@ File: [notebook 05](../notebooks/05_classification_to_regression.ipynb) · [regr
 ### Tài liệu và hàm dùng chung
 
 - [ ] Chốt giao diện đánh giá với ChinhBui trước 07/11; bàn giao các hàm đánh giá cần cho mô hình mình và phần hồi quy để ChinhBui tích hợp vào `evaluation.py`.
-- [ ] Viết [DATA_GUIDE.txt](../DATA_GUIDE.txt): link Kaggle, tổ chức dữ liệu, kịch bản thực nghiệm.
+- [x] Viết [DATA_GUIDE.txt](../DATA_GUIDE.txt): link Kaggle, tổ chức dữ liệu, kịch bản thực nghiệm.
 - [ ] Cập nhật [requirements.txt](../requirements.txt), bàn giao lệnh cài đặt/chạy pipeline cho ChinhBui viết README; rà soát hướng dẫn có khớp môi trường thực tế.
 - [ ] Viết báo cáo phần mình và bàn giao nội dung slides cho ChinhBui.
 - [ ] **Ghép báo cáo trong `report/`**, thống nhất đánh số mục/hình/bảng, tài liệu tham khảo và định dạng **Times New Roman 13, căn đều, giãn dòng 1.3–1.5**.
@@ -206,8 +216,8 @@ Người tổng hợp ghép phần của cả hai và kiểm tra chạy từ đ�
 **Mục tiêu nội bộ: 11/11/2026 — chưa phải hạn nộp chính thức.** Cả hai bàn giao nội dung và kết quả giữa kỳ trong ngày **09/11** để Tuananh ghép; ChinhBui đọc duyệt ngày **10/11**, cả hai hoàn thiện ngày **11/11**.
 
 - [ ] Hoàn tất tiền xử lý và chuẩn bị các tài liệu yêu cầu ở đầu đề.
-- [ ] Hoàn thiện phần giảm chiều/trực quan hóa gồm PCA và Kernel PCA.
-- [ ] Có ít nhất hai mô hình phân loại; ưu tiên Naive Bayes và Logistic, kèm kết quả để trình bày.
+- [x] Hoàn thiện phần giảm chiều/trực quan hóa gồm PCA và Kernel PCA trên cùng mẫu.
+- [x] Có ít nhất hai mô hình phân loại; **chốt thuyết trình Naive Bayes và SVM**. Logistic là phần bổ sung, trình bày đầy đủ cuối kỳ.
 
 ### Cuối kỳ
 

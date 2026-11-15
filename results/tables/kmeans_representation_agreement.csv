@@ -1,0 +1,7 @@
+split,partition,ari_encoded_vs_pca
+80_20,train,1.0
+80_20,validation,0.9776341552631683
+70_30,train,0.9903830227502295
+70_30,validation,0.9925526701129437
+60_40,train,0.9925131792016557
+60_40,validation,1.0

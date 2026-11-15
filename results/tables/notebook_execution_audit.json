@@ -1,0 +1,16 @@
+{
+  "02_dimensionality_reduction.ipynb": {
+    "seconds": 25.02,
+    "code_cells": 14,
+    "errors": 0,
+    "notebook_sha256": "797fd1097ecf457b103a296155540955e96ba2dcd20c22e9e9238443ad14d1e2",
+    "frozen_splits_unchanged": true
+  },
+  "04_classification.ipynb": {
+    "seconds": 196.35,
+    "code_cells": 11,
+    "errors": 0,
+    "notebook_sha256": "06ab092c9563c746a245e1b93bfc42f1296a7b83588394bd22f463318c10b142",
+    "frozen_splits_unchanged": true
+  }
+}

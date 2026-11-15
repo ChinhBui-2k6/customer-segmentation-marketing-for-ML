@@ -20,3 +20,7 @@ venv/
 .env
 .vscode/
 .DS_Store
+
+# Local submission bundles and rendering intermediates
+dist/
+tmp/

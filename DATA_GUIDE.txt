@@ -1,0 +1,84 @@
+HƯỚNG DẪN DỮ LIỆU VÀ KỊCH BẢN THỰC NGHIỆM
+Đề tài: Phân nhóm khách hàng và dự đoán hưởng ứng chiến dịch marketing
+Thành viên: ChinhBui, Tuananh
+
+1. NGUỒN
+https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis
+Tải và giải nén marketing_campaign.csv, đặt tại data/raw/marketing_campaign.csv.
+File có 2.240 dòng và 29 cột, đọc bằng pandas.read_csv(..., sep='\t').
+Không gửi kèm dữ liệu trong gói nộp. Nếu Kaggle yêu cầu đăng nhập, tải bằng tài
+khoản của người chạy. Chương trình không tự tải và không cần token Kaggle.
+
+2. ĐẦU VÀO VÀ NHÃN
+Response là nhãn 0/1; 1 biểu thị hưởng ứng chiến dịch cuối.
+ID là định danh, không phải đặc trưng. Z_CostContact và Z_Revenue là cột hằng.
+Các chiến dịch AcceptedCmp1..5 được xem là lịch sử trước chiến dịch cần dự đoán.
+Giả định thời điểm quan sát cần được nêu khi diễn giải ứng dụng thực tế.
+
+3. LÀM SẠCH VÀ CHIA DỮ LIỆU
+Lọc 3 bản ghi Year_Birth < 1920 và 1 bản ghi Income > 200000.
+Sau làm sạch còn 2.236 dòng. Giữ Income thiếu để imputer học trên train.
+Ngày tham chiếu tạo tuổi/thâm niên: 30/06/2014, không dùng ngày hiện tại.
+Giữ hồ sơ giống nhau nhưng khác khách hàng, gán duplicate_group từ X không dùng y.
+
+Test cuối: 448 dòng, development: 1.788 dòng; seed 42.
+Trong development:
+80:20 -> train 1.430, validation 358.
+70:30 -> train 1.250, validation 538.
+60:40 -> train 1.072, validation 716.
+Chia có phân tầng theo Response và giữ nhóm trùng không giao giữa các tập.
+Ba tỷ lệ không phải ba mẫu thử độc lập, không dùng chúng như ba lần lặp độc lập.
+Manifest lưu hash nội dung. Không sửa/xóa các tập chia để cải thiện kết quả.
+Các phân tích tổng quan trước đây đã từng xem toàn dữ liệu; chỉ khẳng định test
+được đóng băng từ thời điểm chốt quy trình, không khẳng định hoàn toàn chưa từng xem.
+
+4. TỔ CHỨC DỮ LIỆU ĐƯỢC TẠO CỤC BỘ
+data/raw/                           Dữ liệu Kaggle gốc.
+data/processed/splits/              Train/validation/test, metadata và manifest.
+data/processed/experiments/         Biểu diễn trước/sau PCA cho từng tỷ lệ.
+data/processed/clustering/          Mô hình/nhãn K-Means theo khách hàng.
+data/processed/classification/      Mô hình NB/SVM và dự đoán từng dòng.
+data/processed/logistic_scores/     Xác suất Logistic cho hồi quy, chỉ tạo khi cần.
+Các thư mục dữ liệu, dự đoán từng dòng và mô hình không nằm trong gói nộp.
+results/tables/ và results/figures/  Bảng tổng hợp và hình phục vụ báo cáo.
+
+5. TIỀN XỬ LÝ HỌC TỪ TRAIN
+29 đặc trưng số: impute median và StandardScaler.
+2 đặc trưng category: impute most frequent, OneHotEncoder(handle_unknown='ignore').
+Sau mã hóa: 37 chiều. Response và metadata luôn tách khỏi X.
+PCA phân loại giữ floor(d/3)=12 chiều. Từng tỷ lệ và từng fold có pipeline riêng.
+Không lấy ma trận đã fit toàn train để làm CV; CV phải fit lại cả pipeline mỗi fold.
+
+6. KỊCH BẢN GIỮA KỲ
+Notebook 01: tiền xử lý và thống kê.
+Notebook 02: PCA ba tỷ lệ; Kernel PCA RBF với gamma=1/37 trên train 80:20.
+So sánh PCA/Kernel PCA trên cùng 6 thành phần, cùng train và validation.
+Thống kê mean/std/skewness, phương sai, biểu đồ thành phần và quan hệ Response.
+Trustworthiness@10 đo bảo toàn lân cận, không phải độ chính xác phân loại.
+Notebook 03: K-Means, K=2..10, chọn bằng Silhouette train; Elbow dùng đối chiếu.
+Notebook 04: NB/SVM x 3 tỷ lệ x 2 biểu diễn x 3 biến thể (default/balanced/tuned).
+Chọn tham số bằng 5-fold StratifiedGroupKFold, scoring Average Precision.
+Logistic chạy 3 tỷ lệ x 2 biểu diễn x 2 chế độ trọng số, dò C và L1/L2.
+Các kết quả chỉ trên train/validation; không dự đoán hay biến đổi test cuối.
+
+7. CÁCH CHẠY
+Cài requirements.txt trong môi trường Python; hướng dẫn đầy đủ ở README.md.
+Mở Jupyter, chọn kernel đúng môi trường, Restart Kernel and Run All notebook 01..04.
+Hoặc: python -X utf8 scripts/run_notebooks.py 01 02 03 04
+Runner mặc định dùng kernel python3; đăng ký kernel từ đúng Python trước khi chạy.
+Kiểm tra: python -m unittest discover -s tests -v
+Các notebook 02/04 đã ghép cần được chạy theo thứ tự ô, không chỉ chạy ô cuối.
+
+8. ĐỘ ĐO VÀ DIỄN GIẢI
+Phân loại: Accuracy, Precision, Recall, F1, PR-AUC hình thang, ROC-AUC.
+NB/SVM có thêm AP; AP và PR-AUC không phải cùng một cách tính.
+Ngưỡng NB/Logistic 0,5; SVM dùng decision margin, không gọi margin là xác suất.
+Logistic 'default' ở class_weight vẫn có tuning C và penalty.
+Đọc cả FP/FN và khoảng cách train-validation; không kết luận chỉ từ Accuracy.
+PCA và Kernel PCA có thước đo phương sai ở hai không gian khác nhau.
+
+9. CUỐI KỲ
+Hoàn thiện trình bày Logistic và so sánh đủ ba nhóm; làm ít nhất hai mô hình
+hồi quy dự đoán điểm Logistic, cùng ba tỷ lệ và hai biểu diễn. Phần này chưa làm.
+Lệnh tùy chọn tạo nguồn: python -m src.classification --export-logistic-scores
+Không chạy lệnh này trong quy trình bắt buộc của giữa kỳ.

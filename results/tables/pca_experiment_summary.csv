@@ -1,0 +1,4 @@
+split,train_rows,validation_rows,encoded_features,retained_components,retained_variance_ratio,components_for_90pct,components_for_95pct
+80_20,1430,358,37,12,0.8016944648359903,18,21
+70_30,1250,538,37,12,0.8019936047614246,18,21
+60_40,1072,716,37,12,0.8048503961682855,18,21

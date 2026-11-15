@@ -1,0 +1,17 @@
+{
+  "models": [
+    "gaussian_nb",
+    "svm_rbf",
+    "logistic"
+  ],
+  "midterm_focus": [
+    "gaussian_nb",
+    "svm_rbf"
+  ],
+  "split_bytes_and_mtime_unchanged": true,
+  "test_used": false,
+  "nb_svm_metric_rows": 72,
+  "logistic_metric_rows": 24,
+  "combined_metric_rows": 48,
+  "manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9"
+}

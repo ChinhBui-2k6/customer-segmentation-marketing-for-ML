@@ -1,0 +1,16 @@
+cluster,feature,value,rows,fraction
+0,Marital_Group,Partner,288,0.6101694915254238
+0,Marital_Group,Single,183,0.3877118644067797
+0,Marital_Group,Unknown,1,0.00211864406779661
+0,Education_Level,Graduation,250,0.5296610169491526
+0,Education_Level,PhD,111,0.23516949152542374
+0,Education_Level,Master,69,0.1461864406779661
+0,Education_Level,2n Cycle,40,0.0847457627118644
+0,Education_Level,Basic,2,0.00423728813559322
+1,Marital_Group,Partner,512,0.6580976863753213
+1,Marital_Group,Single,266,0.34190231362467866
+1,Education_Level,Graduation,360,0.46272493573264784
+1,Education_Level,PhD,175,0.2249357326478149
+1,Education_Level,Master,145,0.18637532133676094
+1,Education_Level,2n Cycle,68,0.08740359897172237
+1,Education_Level,Basic,30,0.038560411311053984

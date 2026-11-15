@@ -1,0 +1,11 @@
+{
+  "fit_scope": "train_80_20",
+  "train_rows": 1430,
+  "validation_rows": 358,
+  "same_preprocessor": true,
+  "compared_components": 6,
+  "gamma": 0.02702702702702703,
+  "test_used": false,
+  "split_bytes_and_mtime_unchanged": true,
+  "manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9"
+}

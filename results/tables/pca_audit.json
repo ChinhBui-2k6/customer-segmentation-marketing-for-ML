@@ -1,0 +1,40 @@
+{
+  "test_used_for_fit": false,
+  "test_transformed": false,
+  "all_split_files_unchanged_bytes_and_mtime": true,
+  "fit_scope": "train independently for 80_20, 70_30, 60_40",
+  "matches_one_third_pipeline": true,
+  "manifest_sha256": "47f90422b3827bbd12f1e6ca12163afd014da3225b77da47c255b17fd5f1f4f9",
+  "summary": [
+    {
+      "split": "80_20",
+      "train_rows": 1430,
+      "validation_rows": 358,
+      "encoded_features": 37,
+      "retained_components": 12,
+      "retained_variance_ratio": 0.8016944648359903,
+      "components_for_90pct": 18,
+      "components_for_95pct": 21
+    },
+    {
+      "split": "70_30",
+      "train_rows": 1250,
+      "validation_rows": 538,
+      "encoded_features": 37,
+      "retained_components": 12,
+      "retained_variance_ratio": 0.8019936047614246,
+      "components_for_90pct": 18,
+      "components_for_95pct": 21
+    },
+    {
+      "split": "60_40",
+      "train_rows": 1072,
+      "validation_rows": 716,
+      "encoded_features": 37,
+      "retained_components": 12,
+      "retained_variance_ratio": 0.8048503961682855,
+      "components_for_90pct": 18,
+      "components_for_95pct": 21
+    }
+  ]
+}
